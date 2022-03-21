@@ -2,7 +2,10 @@ import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
-import logo from "../Header/large_anyvehicle.png"
+import logo from "../Header/large_anyvehicle.png";
+import { signOut } from '../../actions/usersActions';
+import { useDispatch, useSelector } from "react-redux";
+
 const navigation = [
     { name: 'My Requests', path: '/myRequests', current: true },
     //   { name: 'Team', href: '#', current: false },
@@ -15,6 +18,11 @@ function classNames(...classes) {
 }
 
 export default function Header() {
+    const dispatch = useDispatch();
+
+    const signOutFunc = () => {
+        dispatch(signOut());
+    }
     return (
 
         <Disclosure as="nav" className="bg-gray-800">
@@ -85,12 +93,13 @@ export default function Header() {
                                     >
                                         <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                                             <Menu.Item>
+
                                                 {({ active }) => (
-                                                    <a
-                                                        href="#"
+                                                    <Link to="profile"
+
                                                         className={classNames(active ? 'bg-gray-100' : '', ' block px-4 py-2 text-sm text-gray-700')}
                                                     >Your Profile
-                                                    </a>
+                                                    </Link>
                                                 )}
                                             </Menu.Item>
                                             <Menu.Item>
@@ -104,14 +113,13 @@ export default function Header() {
                                                 )}
                                             </Menu.Item>
                                             <Menu.Item>
+
                                                 {({ active }) => (
-                                                    <a
-                                                        href="#"
-                                                        className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
-                                                    >
+                                                    <Link to="/"  onClick={signOutFunc}  className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}>                                                       
                                                         Sign out
-                                                    </a>
+                                                    </Link>
                                                 )}
+
                                             </Menu.Item>
                                         </Menu.Items>
                                     </Transition>

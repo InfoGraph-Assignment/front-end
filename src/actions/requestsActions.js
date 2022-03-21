@@ -17,7 +17,7 @@ export const listRequests = (id , token) => async (dispatch) => {
     dispatch({ type: REQUEST_LIST_REQUEST });
     const { data } = await axios.post(
       `${REACT_APP_API_KEY}/myRequests`,{userId : id},
-      { headers: { Authorization: `Bearer ${token}` } }
+      { headers: { 'Authorization': `Bearer ${token}` } }
 
     );
 

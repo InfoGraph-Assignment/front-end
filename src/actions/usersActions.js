@@ -10,6 +10,7 @@ import {
     USER_SIGNIN_REQUEST,
     USER_SIGNIN_SUCCESS,
     USER_SIGNIN_FAIL,
+    USER_SIGNOUT_REQUEST
 } from "../constants/usersConstants";
 
 
@@ -66,18 +67,24 @@ export const signIn = (email , password) => async (dispatch) => {
     }
 }
 
-export const signOut = () => () => {}
+export const signOut = () => (dispatch) => {
+    cookies.remove("token")
+    dispatch({
+        type : USER_SIGNOUT_REQUEST,
+        payload : {},
+        loginStatus : false
+    })
+}
 
-export const validateToken = (token) => async (dispatch) => {
-   
-    // try {
-    //     console.log("userData = ",userData);
-    //     dispatch({
-    //         type: USER_SIGNIN_SUCCESS,
-    //         payload: userData,
-    //         loginStatus: true,
-    //     })
-    // } catch (error) {
-    //     return false;
-    // }
+
+export const validateToken = (userData) => async (dispatch) => {
+    try {
+        dispatch({
+            type: USER_SIGNIN_SUCCESS,
+            payload: userData,
+            loginStatus: true,
+        })
+    } catch (error) {
+        return false;
+    }
 }
