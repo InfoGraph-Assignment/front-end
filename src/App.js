@@ -1,25 +1,46 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import SignIn from './components/Forms/SignIn';
+import Header from './components/Header/Header';
+import MyRequests from './components/MyRequests';
+import { useDispatch, useSelector } from "react-redux";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-function App() {
+export default function App() {
+
+  const dispatch = useDispatch();
+  const userDetails = useSelector((state) => state.usersSignin);
+  const { loginStatus, user, error, loading } = userDetails;
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+    <div>
+      {loginStatus ? 
+      <BrowserRouter>
+     
 
-export default App;
+      <Header />
+
+    
+      <Routes>
+        <Route path="/" element={<h1>Hello World !</h1>} />
+          <Route path="/myRequests" element={<MyRequests />} />
+         
+        </Routes>
+
+     
+
+      </BrowserRouter>
+       : <SignIn />}
+
+      {/* {
+        loginStatus ?
+        <>
+      
+        <Header />
+          <h1>Welcome {user.userName}</h1>
+
+          </>
+          :
+          <SignIn />
+      } */}
+    </div>
+  )
+}
