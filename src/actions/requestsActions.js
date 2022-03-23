@@ -25,7 +25,7 @@ import {
 
 } from "../constants/requestsConstants";
 
-const REACT_APP_API_KEY = process.env.REACT_APP_API_KEY || "http://localhost:5000";
+const REACT_APP_API_KEY = process.env.REACT_APP_API_KEY || "https://infographtest.herokuapp.com";
 
 export const listRequests = (id , token) => async (dispatch) => {
   try {
