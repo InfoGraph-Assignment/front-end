@@ -7,8 +7,14 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { validateToken } from './actions/usersActions';
 import SignUp from './components/Forms/SignUp';
 import Profile from './components/Profile';
+import Request from './components/Request';
+import NewRequest from './components/NewRequest';
+import Home from './components/Home';
 import cookies from "react-cookies"
 import { useJwt } from "react-jwt"
+import AdminDashboard from './components/AdminDashboard';
+import ListRequests from './components/ListRequests';
+
 
 export default function App() {
   const dispatch = useDispatch();
@@ -73,9 +79,13 @@ export default function App() {
           {loginStatus ?
             <>
             
-              <Route path="/" element={<h1>Main Page</h1>} />
+              <Route path="/" element={<Home/>} />
               <Route path="/myRequests" element={<MyRequests />} />
               <Route path="/profile" element={<Profile />} />
+              <Route path='/myRequests/:id' element={<Request />} />
+              <Route path='/newRequest' element={<NewRequest />} />
+              <Route path="/AdminDashBoard" element={<AdminDashboard/>} />
+              <Route path="AdminDashBoard/:status" element={<ListRequests/>} />
             </>
             :
               toggleSign ?

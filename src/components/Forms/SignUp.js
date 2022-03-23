@@ -44,7 +44,7 @@ export default function SignUp(props) {
           <div className="rounded-md shadow-sm -space-y-px">
           <div>
               <label htmlFor="email-address" className="sr-only">
-               Firat Name
+               First Name
               </label>
               <input
                 id="email-address"
