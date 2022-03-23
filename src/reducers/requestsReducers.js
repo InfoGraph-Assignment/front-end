@@ -17,6 +17,9 @@ import {
   REQUEST_ByStatus_REQUEST,
   REQUEST_ByStatus_SUCCESS,
   REQUEST_ByStatus_FAIL,
+  UPDATE_STATUS_REQUEST,
+  UPDATE_STATUS_SUCCESS,
+  UPDATE_STATUS_FAIL
 } from '../constants/requestsConstants';
 
 export const requestsListReducer = (state = { requests: [] }, action) => {
@@ -93,6 +96,19 @@ export const requestsByStatusReducer = (state = { requestsByStatusData: [] }, ac
       return { loadingByStatus: false, requestsByStatusData: action.payload };
     case REQUEST_ByStatus_FAIL:
       return { loadingByStatus: false, requestsByStatusData: action.payload };
+    default:
+      return state;
+  }
+}
+
+export const updateStatusReducer = (state = { updateStatusData: {} }, action) => {
+  switch (action.type) {
+    case UPDATE_STATUS_REQUEST:
+      return { loadingUpdateStatus: true, updateStatusData: {} };
+    case UPDATE_STATUS_SUCCESS:
+      return { loadingUpdateStatus: false, updateStatusData: action.payload };
+    case UPDATE_STATUS_FAIL:
+      return { loadingUpdateStatus: false, errorUpdateStatus: action.payload };
     default:
       return state;
   }

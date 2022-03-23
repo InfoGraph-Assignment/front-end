@@ -1,7 +1,7 @@
 import { createStore , combineReducers , applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import {requestsListReducer ,requestsDetailsReducer, newRequestReducer , updateRequestReducer , allRequestsReducer ,requestsByStatusReducer} from './reducers/requestsReducers';
+import {requestsListReducer ,requestsDetailsReducer, newRequestReducer , updateRequestReducer , allRequestsReducer ,requestsByStatusReducer , updateStatusReducer} from './reducers/requestsReducers';
 import {usersSignupReducer ,usersSigninReducer} from './reducers/usersReducers';
 // import cookie from 'react-cookies';
 // import { useDispatch, useSelector } from "react-redux";
@@ -22,7 +22,8 @@ const reducers = combineReducers({
     updateRequest : updateRequestReducer,
     usersSignin : usersSigninReducer,
     allRequests : allRequestsReducer,
-    requestsByStatus : requestsByStatusReducer
+    requestsByStatus : requestsByStatusReducer,
+    updateStatus : updateStatusReducer
 });
 
 const initialState = {};

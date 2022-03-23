@@ -18,6 +18,10 @@ import {
   REQUEST_ByStatus_REQUEST,
   REQUEST_ByStatus_SUCCESS,
   REQUEST_ByStatus_FAIL,
+  UPDATE_STATUS_REQUEST,
+  UPDATE_STATUS_SUCCESS,
+  UPDATE_STATUS_FAIL
+
 
 } from "../constants/requestsConstants";
 
@@ -170,5 +174,24 @@ export const requestByStatus = (token , status) => async (dispatch) => {
 }
 
 export const updateStatus = (token , id , status)=> async(dispatch)=>{
-  
+  try{
+    dispatch({ type: UPDATE_STATUS_REQUEST });
+
+    const { data } = await axios.put(
+      `${REACT_APP_API_KEY}/updateStatus/${status}/${id}`,{},
+      { headers: { 'Authorization': `Bearer ${token}` } }
+    );
+    dispatch({
+      type: UPDATE_STATUS_SUCCESS,
+      payload: data,
+    });
+  } catch(error){
+    dispatch({
+      type: UPDATE_STATUS_FAIL,
+      payload: 
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,  
+    })
+  }
 }

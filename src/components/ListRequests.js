@@ -1,7 +1,8 @@
 import React, { useEffect, useState, Fragment, useRef } from 'react';
 import { Dialog, Transition } from '@headlessui/react'
 import { useDispatch, useSelector } from "react-redux";
-import { requestByStatus } from '../actions/requestsActions';
+import { requestByStatus, updateStatus } from '../actions/requestsActions';
+
 import Loading from './Loading';
 import { Link } from 'react-router-dom';
 
@@ -9,6 +10,7 @@ export default function ListRequests() {
     const dispatch = useDispatch();
     const { user } = useSelector((state) => state.usersSignin);
     const { requestsByStatusData, loading, error } = useSelector((state) => state.requestsByStatus);
+    const { updateStatusData } = useSelector((state) => state.updateStatus);
     const [open, setOpen] = useState(false)
     const cancelButtonRef = useRef(null)
     const [requests, setRequests] = useState([]);
@@ -28,17 +30,23 @@ export default function ListRequests() {
         setSelectedRequest(data)
     }
     useEffect(() => {
-        // if (requestsByStatusData.length > 0) {
-        //     if (requestStatus === "pending") {
-        //         setPendingRequests(requestsByStatusData);
-        //     } else if (requestStatus === "accepted") {
-        //         setApprovedRequests(requestsByStatusData);
-        //     } else if (requestStatus === "rejected") {
-        //         setRejectedRequests(requestsByStatusData);
-        //     }
-        // }
         setRequests(requestsByStatusData);
     }, [requestsByStatusData])
+
+    const handleUpdate = (id, status) => {
+        dispatch(updateStatus(user?.token, id, status));
+        setOpen(false)
+    }
+
+    useEffect(() => {
+        if (updateStatusData == "updated") {
+            const RequestId = window.location.pathname.split("/")[2];
+            dispatch(requestByStatus(user?.token, requestStatus));
+            setOpen(false)
+        }
+
+    }, [updateStatusData])
+
     function classNames(...classes) {
         return classes.filter(Boolean).join(' ')
     }
@@ -164,7 +172,7 @@ export default function ListRequests() {
                                                                 required
                                                                 className="appearance-none rounded-none relative block w-3/4 px-3 py-2 my-3  placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                                                             >
-                                                                {selectedRequest.User.userName}
+                                                                {selectedRequest?.User?.userName}
                                                             </p>
 
                                                         </div>
@@ -179,9 +187,9 @@ export default function ListRequests() {
                                                                 required
                                                                 className="appearance-none rounded-none relative block w-3/4 px-3 py-2 my-3  placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                                                             >
-                                                              {selectedRequest.title} 
+                                                                {selectedRequest.title}
                                                             </p>
-                                                         
+
                                                         </div>
                                                         <div className='flex justify-between items-center'>
                                                             <label className='w-1/4 font-semibold' >
@@ -246,20 +254,27 @@ export default function ListRequests() {
                                                     </div>
 
                                                     <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                                                        <button
-                                                            type="button"
-                                                            className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2  text-white font-medium bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm"
-                                                        >
-                                                            Accept Request
-                                                        </button>
-                                                        <button
-                                                            type="button"
-                                                            className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2  text-white font-medium bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
-                                                        
-                                                            ref={cancelButtonRef}
-                                                        >
-                                                            Reject Request
-                                                        </button>
+                                                        {selectedRequest.status === 'pending' ?
+                                                            <>
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => handleUpdate(selectedRequest.id, "accepted")}
+                                                                    className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2  text-white font-medium bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm"
+                                                                >
+                                                                    Accept Request
+                                                                </button>
+                                                                <button
+                                                                    type="button"
+                                                                    className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2  text-white font-medium bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
+                                                                    onClick={() => handleUpdate(selectedRequest.id, "rejected")}
+                                                                    ref={cancelButtonRef}
+                                                                >
+                                                                    Reject Request
+                                                                </button>
+                                                            </>
+                                                            :
+                                                            null
+                                                        }
 
                                                         <button
                                                             type="button"
